@@ -23,7 +23,7 @@ function setup() {
   Simulation(500);
   
   createP('')
-  var button = createButton('restart')
+  var button = createButton('Restart Simulation')
   button.mousePressed(Simulation)
   
   createP('Population Size')

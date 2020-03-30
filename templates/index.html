@@ -45,14 +45,18 @@
 <div style="width:50%; height: 50%;">
 	<canvas id="canvas"></canvas>
 </div>
+<button onclick="removeData()">Reset Plot</button>
 
 
  
   
 	<script>
+	
+	let data_points_counter = 0;
 
     let data_points = get_data();
     
+
     setInterval(addData, 60)
 
     
@@ -63,18 +67,21 @@
 				labels: data_points[0],
 				datasets: [{
 					label: 'Infected',
+					fill: false,
 					borderColor: window.chartColors.red,
-					//backgroundColor: window.chartColors.red,
+					backgroundColor: window.chartColors.red,
 					data: [data_points[1]],
 				}, {
 					label: 'Susceptable',
+					fill: false,
 					borderColor: window.chartColors.blue,
-					//backgroundColor: window.chartColors.blue,
+					backgroundColor: window.chartColors.blue,
 					data: [data_points[2]],
 				}, {
 					label: 'Removed',
+					fill: false,
 					borderColor: window.chartColors.green,
-					//backgroundColor: window.chartColors.green,
+					backgroundColor: window.chartColors.green,
 					data: [data_points[3]],
 				}]
 			},
@@ -111,25 +118,50 @@
 			}
 		};
 
-		window.onload = function() {
-			var ctx = document.getElementById('canvas').getContext('2d');
-			window.myLine = new Chart(ctx, config);
-		};
+	var empty_plot_data = config
 
-		 function addData() {
-			if (config.data.datasets.length > 0) {
-				data_points = get_data();
-				config.data.labels.push(data_points[0]);
-        let i = 1;
-				config.data.datasets.forEach(function(dataset) {
-
-          dataset.data.push(get_data()[i]);
-          i++
-				});
-
-				window.myLine.update();
+	function drawChart(objChart,data){
+			if(window.myLine!=null){
+				window.myLine .destroy();
 			}
+		// Get the context of the canvas element we want to select
+		var ctx = objChart.getContext("2d");
+		window.myLine  = new Chart(ctx).Pie(data, {animateScale: true});
+	}
+
+	function removeData() {
+		console.log('PLOT-REMOVE-DATA')
+		config.data.labels.pop();
+		data_length = config.data.labels.length;
+		for (ix = 0; ix < data_length; ix++) {
+			config.data.datasets.forEach((dataset) => {
+			dataset.data.pop();
+			});
 		}
+		
+		window.myLine.update();
+	}
+
+	window.onload = function() {
+		var ctx = document.getElementById('canvas').getContext('2d');
+		window.myLine = new Chart(ctx, config);
+	};
+
+		function addData() {
+		if (config.data.datasets.length > 0) {
+			data_points = get_data();
+			config.data.labels.push(data_points[0]);
+			let i = 1;
+			
+			config.data.datasets.forEach(function(dataset) {
+
+					dataset.data.push(get_data()[i]);
+					i++
+			});
+
+			window.myLine.update();
+		}
+	}
 
 		
 
