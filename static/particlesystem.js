@@ -10,12 +10,12 @@ class ParticleSystem {
     
   }
 
-  addParticle(x, y, infected, prob_infected, recovery_time, social_distance, symptons) {
+  addParticle(x, y, infected, prob_infected, recovery_time, social_distance, symptons, prob_dead) {
     if (x !== undefined && y !== undefined) {
       
-      this.particles.push(new Particle(x, y, infected, prob_infected, recovery_time, social_distance, symptons));
+      this.particles.push(new Particle(x, y, infected, prob_infected, recovery_time, social_distance, symptons, prob_dead));
     } else {
-      this.particles.push(new Particle(this.origin.x, this.origin.y, infected, prob_infected,recovery_time, social_distance, symptons));
+      this.particles.push(new Particle(this.origin.x, this.origin.y, infected, prob_infected,recovery_time, social_distance, symptons, prob_dead));
     }
   }
   

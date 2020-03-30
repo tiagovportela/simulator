@@ -120,16 +120,16 @@ class Particle {
     noStroke()
     
     if(this.infected ==true && this.symptons == true){
-      fill(255,0,0);
+      fill(233, 0, 50);
     }
     else if(this.infected ==true && this.symptons == false){
-      fill(255,255,0);
+      fill(255, 151, 173);
     }
     else if (this.was_infected){
-      fill(0,255,0);
+      fill(75, 192, 192);
     }
     else{
-      fill(0,0,0);
+      fill(54, 162, 235);
     }
     
     ellipse(this.position.x, this.position.y, this.r*2, this.r*2);

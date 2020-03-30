@@ -2,6 +2,17 @@
 <html>
   
   <head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-162282639-1"></script>
+	<script>
+  		window.dataLayer = window.dataLayer || [];
+  		function gtag(){dataLayer.push(arguments);}
+  		gtag('js', new Date());
+
+  		gtag('config', 'UA-162282639-1');
+	</script>
+
+	
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
     <script src="{{ url_for('static', filename='Chart.js') }}"></script>
@@ -14,6 +25,8 @@
     <script type="text/javascript" src="{{ url_for('static', filename='particle.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='particlesystem.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='sketch.js') }}"></script>
+	
+	<link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet"> 
 
     <meta charset="utf-8" />
     <style>
@@ -22,30 +35,46 @@
         -webkit-user-select: none;
         -ms-user-select: none;
       }
+
+	  body{
+		font-family: 'Lato', sans-serif;
+	  }
+	  
     </style>
 </head>
 
 <body>
   <h1>Infectious Disease Simulator</h1>
-  <!-- <div style="width: 100%; display: table;">
-    <div style="display: table-row">
-		<div style="width: 600px; display: table-cell;"> 
-			<div id="sketch-holder">
-    
-			</div> 
-		</div>
-		<div style="display: table-cell width: 638; height: 358;">  
-			<canvas id="canvas"></canvas>
-		</div>
-    </div>
-</div> -->
-<div id="sketch-holder">
-</div> 
 
-<div style="width:50%; height: 50%;">
+<div style="width: 100%; overflow: hidden;">
+	
+	<div style="width: 650px; float: left;">
+		<h3>Simulation</h3>
+		<div id="sketch-holder"></div>  
+	</div>
+
+	<div style="margin-left: 670px;">
+		<h3>Control Variables</h3>
+		<p>Population Size</p>
+		<div id="slider_population"></div>
+		<p>Probabilite of getting Infected</p>
+		<div id="slider_prob_infected"></div>
+		<p>Recovery Time</p>
+		<div id="slider_recovery_time"></div>
+		<p>Social Distance</p>
+		<div id="slider_social_distance"></div>
+		<p>Percentage of people without symptoms</p>
+		<div id="slider_no_symptoms"></div>
+		<div id="cheack_box_quanrentine"></div> 
+	</div>
+</div>
+
+<div style="width:640px; height:360px;background-color:white;">
 	<canvas id="canvas"></canvas>
 </div>
-<button onclick="removeData()">Reset Plot</button>
+<button style="height:60px;width:200px" onclick="restartSimulation()">
+	Restart Simulation
+</button>
 
 
  
@@ -89,9 +118,10 @@
 				responsive: true,
 				title: {
 					display: true,
-					text: 'Population Size'
+					text: 'Epidemiological curves'
 				},
 				tooltips: {
+					enabled: false,
 					mode: 'index',
 					intersect: false,
 				},
@@ -120,20 +150,12 @@
 
 	var empty_plot_data = config
 
-	function drawChart(objChart,data){
-			if(window.myLine!=null){
-				window.myLine .destroy();
-			}
-		// Get the context of the canvas element we want to select
-		var ctx = objChart.getContext("2d");
-		window.myLine  = new Chart(ctx).Pie(data, {animateScale: true});
-	}
-
-	function removeData() {
-		console.log('PLOT-REMOVE-DATA')
-		config.data.labels.pop();
+	function restartSimulation() {
+		Simulation();
+		
 		data_length = config.data.labels.length;
 		for (ix = 0; ix < data_length; ix++) {
+			config.data.labels.pop();
 			config.data.datasets.forEach((dataset) => {
 			dataset.data.pop();
 			});

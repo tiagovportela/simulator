@@ -9,7 +9,7 @@ let plot;
 let cheack_box_quanrentine;
 let data = [];
 //let POPULATION = false;
-let counter = 0;
+let counter_time = 0;
 let quarantine = false;
 function setup() {
 
@@ -20,29 +20,32 @@ function setup() {
 
   
   
-  Simulation(500);
+  Simulation();
   
-  createP('')
-  var button = createButton('Restart Simulation')
-  button.mousePressed(Simulation)
-  
-  createP('Population Size')
+ 
   slider_population = createSlider(0,1000,100);
+  slider_population.parent("slider_population");
 
-  createP('Probabilite of getting Infected')
   slider_prob_infected = createSlider(0,1000,value=500,step=1);
+  slider_prob_infected.parent("slider_prob_infected");
 
-  createP('Recovery Time')
-  slider_recovery_time= createSlider(50,500,value=255,step=1);
+  slider_recovery_time= createSlider(5,500,value=255,step=1);
+  slider_recovery_time.parent("slider_recovery_time");
 
-  createP('Social Distance')
-  slider_social_distance= createSlider(28,200,value=200,step=43);
 
-  createP("Percentage of people without symptoms" )
+
+  slider_social_distance= createSlider(28,500,value=200,step=50);
+  slider_social_distance.parent("slider_social_distance");
+
+
   slider_no_symptoms= createSlider(0,100,value=50,step=10);
+  slider_no_symptoms.parent("slider_no_symptoms");
+
 
   cheack_box_quanrentine = createCheckbox("Quarantine", false);
   cheack_box_quanrentine.changed(change_quarantine_state);
+  cheack_box_quanrentine.parent("cheack_box_quanrentine");
+
 
 }
 
@@ -54,8 +57,11 @@ function change_quarantine_state(){
 
 
 function draw() {
-  background(200);
-  print(quarantine)
+  //background(163, 163, 163);
+  background(0, 0, 0);
+  
+  
+
   let number_I = 0;
   let number_S = 0;
   let number_R = 0;
@@ -70,14 +76,14 @@ function draw() {
       number_R +=1
     }
   }
-  data = [counter, number_I, number_S, number_R];
+  data = [counter_time, number_I, number_S, number_R];
   ps.update()
   //ps.intersept();
   ps.display()
   if(quarantine){
     ps.remove();
   }
-  counter+=1
+  counter_time+=1
 
 }
 
@@ -88,6 +94,7 @@ function get_data(){
 
 function Simulation(){
   data = [];
+  counter_time = 0;
   try {
     Population = slider_population.value();
     prob_infected =slider_prob_infected.value();
