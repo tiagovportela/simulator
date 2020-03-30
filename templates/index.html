@@ -57,7 +57,7 @@
 		<h3>Control Variables</h3>
 		<p>Population Size</p>
 		<div id="slider_population"></div>
-		<p>Probabilite of getting Infected</p>
+		<p>Probability of getting Infected</p>
 		<div id="slider_prob_infected"></div>
 		<p>Recovery Time</p>
 		<div id="slider_recovery_time"></div>
@@ -69,12 +69,23 @@
 	</div>
 </div>
 
-<div style="width:640px; height:360px;background-color:white;">
-	<canvas id="canvas"></canvas>
+<div style="width: 100%; overflow: hidden;">
+	
+	<div style="width: 650px; float: left;">
+		<div style="width:640px; height:360px;background-color:white;">
+			<canvas id="canvas"></canvas>
+		</div>
+	</div>
+
+	<div style="margin-left: 670px;">
+		<br>
+		<br>
+		<br>
+		<button style="height:60px;width:200px" onclick="restartSimulation()">
+			Restart Simulation
+		</button>
+	</div>
 </div>
-<button style="height:60px;width:200px" onclick="restartSimulation()">
-	Restart Simulation
-</button>
 
 
  
