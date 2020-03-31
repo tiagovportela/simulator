@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-162282639-1"></script>
+	<script>
+  		window.dataLayer = window.dataLayer || [];
+  		function gtag(){dataLayer.push(arguments);}
+  		gtag('js', new Date());
+
+  		gtag('config', 'UA-162282639-1');
+	</script>
+
+	
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+    <script src="{{ url_for('static', filename='Chart.js') }}"></script>
+    <script src="{{ url_for('static', filename='utils.js') }}"></script>
+
+    <!-- <script type="text/javascript" src="particle.js"></script>
+    <script type="text/javascript" src="particlesystem.js"></script>
+    <script type="text/javascript" src="sketch.js"></script> -->
+
+    <script type="text/javascript" src="{{ url_for('static', filename='particle.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='particlesystem.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='sketch.js') }}"></script>
+	
+	<link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet"> 
+
+    <meta charset="utf-8" />
+    <style>
+      canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+      }
+
+	  body{
+		font-family: 'Lato', sans-serif;
+	  }
+	  
+    </style>
+</head>
+
+<body>
+  <h1>Infectious Disease Simulator</h1>
+
+<div style="width: 100%; overflow: hidden;">
+	
+	<div style="width: 650px; float: left;">
+		<h3>Simulation</h3>
+		<div id="sketch-holder"></div>  
+	</div>
+
+	<div style="margin-left: 670px;">
+		<h3>Control Variables</h3>
+		<p>Population Size</p>
+		<div id="slider_population"></div>
+		<p>Probability of getting Infected</p>
+		<div id="slider_prob_infected"></div>
+		<p>Recovery Time</p>
+		<div id="slider_recovery_time"></div>
+		<p>Social Distance</p>
+		<div id="slider_social_distance"></div>
+		<p>Percentage of people without symptoms</p>
+		<div id="slider_no_symptoms"></div>
+		<div id="cheack_box_quanrentine"></div> 
+	</div>
+</div>
+
+<div style="width: 100%; overflow: hidden;">
+	
+	<div style="width: 650px; float: left;">
+		<div style="width:640px; height:360px;background-color:white;">
+			<canvas id="canvas"></canvas>
+		</div>
+	</div>
+
+	<div style="margin-left: 670px;">
+		<br>
+		<br>
+		<br>
+		<button style="height:60px;width:200px" onclick="restartSimulation()">
+			Restart Simulation
+		</button>
+	</div>
+</div>
+
+
+ 
+  
+	<script>
+	
+	let data_points_counter = 0;
+
+    let data_points = get_data();
+    
+
+    setInterval(addData, 60)
+
+    
+    
+    var config = {
+			type: 'line',
+			data: {
+				labels: data_points[0],
+				datasets: [{
+					label: 'Infected',
+					fill: false,
+					borderColor: window.chartColors.red,
+					backgroundColor: window.chartColors.red,
+					data: [data_points[1]],
+				}, {
+					label: 'Susceptable',
+					fill: false,
+					borderColor: window.chartColors.blue,
+					backgroundColor: window.chartColors.blue,
+					data: [data_points[2]],
+				}, {
+					label: 'Removed',
+					fill: false,
+					borderColor: window.chartColors.green,
+					backgroundColor: window.chartColors.green,
+					data: [data_points[3]],
+				}]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'Epidemiological curves'
+				},
+				tooltips: {
+					enabled: false,
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				scales: {
+					x: {
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Time'
+						}
+					},
+					y: {
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Value'
+						}
+					}
+				}
+			}
+		};
+
+	var empty_plot_data = config
+
+	function restartSimulation() {
+		Simulation();
+		
+		data_length = config.data.labels.length;
+		for (ix = 0; ix < data_length; ix++) {
+			config.data.labels.pop();
+			config.data.datasets.forEach((dataset) => {
+			dataset.data.pop();
+			});
+		}
+		
+		window.myLine.update();
+	}
+
+	window.onload = function() {
+		var ctx = document.getElementById('canvas').getContext('2d');
+		window.myLine = new Chart(ctx, config);
+	};
+
+		function addData() {
+		if (config.data.datasets.length > 0) {
+			data_points = get_data();
+			config.data.labels.push(data_points[0]);
+			let i = 1;
+			
+			config.data.datasets.forEach(function(dataset) {
+
+					dataset.data.push(get_data()[i]);
+					i++
+			});
+
+			window.myLine.update();
+		}
+	}
+
+		
+
+		
+    
+
+	</script>
+  
+  
+ 
+</body>
+
+</html>
