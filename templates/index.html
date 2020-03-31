@@ -29,7 +29,7 @@
             width: 95%;
             margin-left: auto;
             margin-right: auto;
-            
+
         }
 
         img {
@@ -41,11 +41,41 @@
             vertical-align: center;
             display: table-cell;
         }
-        h1{
+
+        h1 {
             text-align: center;
         }
-        p{
+
+        p {
             text-align: center;
+        }
+
+        .myButton {
+            box-shadow: inset 0px 1px 0px 0px #cf866c;
+            background: linear-gradient(to bottom, #d0451b 5%, #bc3315 100%);
+            background-color: #d0451b;
+            border-radius: 3px;
+            border: 1px solid #942911;
+            display: inline-block;
+            cursor: pointer;
+            color: #ffffff;
+            font-family: Arial;
+            font-size: 13px;
+            padding: 6px 24px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #854629;
+            text-align: center;
+            width: 800px;
+        }
+
+        .myButton:hover {
+            background: linear-gradient(to bottom, #bc3315 5%, #d0451b 100%);
+            background-color: #bc3315;
+        }
+
+        .myButton:active {
+            position: relative;
+            top: 1px;
         }
     </style>
 
@@ -56,16 +86,16 @@
     <p>This is a simple Simulator </p>
     <p>Here you can see, how variables like Social Distance, Recovery time, etc. affect the
         behavior of infectious diseases in a population.</p>
-    
-        <br>
-        
-    
+
+    <br>
+
+
     <div style="width: 100%; overflow: hidden;">
         <div style="width: 650px; float: left;">
             <img src="static/example.png">
         </div>
         <div style="margin-left: 650px;">
-            
+
             <br>
             <br>
             <div id='legends'>
@@ -77,8 +107,8 @@
                         <h4>Susceptible - Healthy people who can get infected</h5>
                     </div>
                 </div>
-        
-        
+
+
                 <div style="width: 100%; overflow: hidden;">
                     <div style="width: 50px; float: left;">
                         <img src="static/infected_no_sim.png">
@@ -87,7 +117,7 @@
                         <h4>People Infected that don't show Symptons</h5>
                     </div>
                 </div>
-        
+
                 <div style="width: 100%; overflow: hidden;">
                     <div style="width: 50px; float: left;">
                         <img src="static/infec.png">
@@ -107,12 +137,10 @@
                 <h4><b>Quarantine</b> - If selected, people infected with symptoms are removed from the population.</h4>
             </div>
         </div>
-        
+
     </div>
-    <!-- <button action="{{ url_for('simulation') }}" style="height:60px;width:800px;" ><h3>Run Simulator</h3></button> -->
-
-    <a href="{{ url_for('simulation') }}" style="height:60px;width:800px;" ><h3>Run Simulator</h3></a> 
-
+    <br>
+    <a href="{{ url_for('simulation') }}" class="myButton"><h3>Run Simulator</h3></a>
 
 
 
